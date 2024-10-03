@@ -44,6 +44,12 @@ public class OrderService {
             .toList();
     }
 
+    @Transactional(readOnly = true)
+    public boolean isOrderAvailable(Long productId) {
+        Product product = productRepository.findById(productId);
+        return product.isAvailable();
+    }
+
     private void removeCartItems(OrderRequest request, User orderUser) {
         cartItemRepository.removeProductsFromCart(orderUser.getId(), request.getProductIds());
     }

@@ -39,12 +39,19 @@ public class Product extends BaseEntity {
         this.saleStartDate = saleStartDate;
     }
 
-    public static Product create(String name, LocalDateTime saleEndDate, LocalDateTime saleStartDate) {
+    public static Product create(String name, LocalDateTime saleStartDate, LocalDateTime saleEndDate) {
         return Product.builder()
             .name(name)
-            .saleEndDate(saleEndDate)
             .saleStartDate(saleStartDate)
+            .saleEndDate(saleEndDate)
             .build();
     }
 
+    public boolean isAvailable() {
+        LocalDateTime now = LocalDateTime.now();
+        if(now.isBefore(saleStartDate) || now.isAfter(saleEndDate)) {
+            return false;
+        }
+        return true;
+    }
 }

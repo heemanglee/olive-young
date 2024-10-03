@@ -26,8 +26,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse createProduct(ProductRequest request) {
-        Product product = Product.create(request.getProductName(), request.getSaleStartDate(),
-            request.getSaleEndDate());
+        Product product = createNewProduct(request);
         productRepository.save(product);
         return ProductResponse.from(product);
     }
@@ -51,6 +50,11 @@ public class ProductService {
         productRepository.updatePromotionToNull(promotion.getId());
         promotionRepository.deleteBy(promotion.getId());
         return PromotionStatus.from(promotion.getId(), Collections.emptyList());
+    }
+
+    private static Product createNewProduct(ProductRequest request) {
+        return Product.create(request.getProductName(), request.getSaleStartDate(),
+            request.getSaleEndDate());
     }
 
     private Promotion findPromotionBy(Long promotionId) {
